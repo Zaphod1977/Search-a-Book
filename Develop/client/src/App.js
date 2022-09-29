@@ -12,16 +12,11 @@ import {
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
-import Login from './pages/Login';
-import Signup from './pages/Signup';
+// import Login from './pages/Login';
+// import Signup from './pages/Signup';
 
 const httpLink = createHttpLink({
   uri: '/graphql',
-});
-
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -34,6 +29,11 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+});
+
 function App() {
   return (
     <ApolloProvider client={client}>
@@ -41,14 +41,14 @@ function App() {
         <>
           <Navbar />
           <Switch>
-            <Route
+            {/* <Route
               path="/login"
               element={<Login />}
             />
             <Route
               path="/signup"
               element={<Signup />}
-            />
+            /> */}
             <Route exact path='/' component={SearchBooks} />
             <Route exact path='/saved' component={SavedBooks} />
             <Route render={() => <h1 className='display-2'>Wrong page!</h1>} />
