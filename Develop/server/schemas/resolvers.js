@@ -14,6 +14,19 @@ const resolvers = {
       }
 
       throw new AuthenticationError('Not logged in');
+    },
+    authenticationError: (parent, args, context) => {
+      throw new AuthenticationError('not authenticated');
+    },
+    apolloError: (parent, args, context) => {
+      throw new ApolloError('not Apollod');
+    },
+    userInputError: (parent, args, context, info) => {
+      if (args.input !== 'expected') {
+        throw new UserInputError('Form Arguments invalid', {
+          invalidArgs: Object.keys(args),
+        });
+      }
     }
   },
 
@@ -34,9 +47,27 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
+    authenticationError: (parent, args, context) => {
+      throw new AuthenticationError('not authenticated');
+    },
+    apolloError: (parent, args, context) => {
+      throw new ApolloError('not Apollod');
+    },
+    userInputError: (parent, args, context, info) => {
+      if (args.input !== 'expected') {
+        throw new UserInputError('Form Arguments invalid', {
+          invalidArgs: Object.keys(args),
+        });
+      }
+    },
     addUser: async (parent, args) => {
+      console.log('resolvers js')
       console.log(args);
-      const user = await User.create(args);
+      try{
+        const user = await User.create(args);
+      } catch (e) {
+        console.error(e)
+      };
       const token = signToken(user);
 
       return { token, user };
