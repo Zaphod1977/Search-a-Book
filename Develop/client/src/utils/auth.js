@@ -35,6 +35,10 @@ class AuthService {
   login(idToken) {
     // Saves user token to localStorage
     localStorage.setItem('id_token', idToken);
+    var req = new XMLHttpRequest();
+    req.open("POST", '/');
+    req.setRequestHeader('Authorization', 'Basic ' + idToken);
+    req.send();
     window.location.assign('/');
   }
 
